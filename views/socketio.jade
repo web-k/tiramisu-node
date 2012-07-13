@@ -1,0 +1,48 @@
+script(src='http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js')
+script(src='/socket.io/socket.io.js')
+script(type='text/javascript')
+  //add chat log
+  function addlog(data) {
+    var date = new Date(data.time);
+    console.log(date);
+
+    var hour = date.getHours();
+    if ( hour < 10 ) {
+      hour = '0' + hour;
+    }
+    var minute = date.getMinutes();
+    if ( minute < 10 ) {
+      minute = '0' + minute;
+    }
+    $('#log').prepend($('<li/>').text(
+      hour + ':' + minute + ' (' + data.name + ') ' + data.message
+    ));
+  }
+  var socket = io.connect('http://192.168.12.141:3000/chat');
+  socket.on('chat.list', function(list) {
+    for (var i = 0; i < list.lenght; i++) {
+      addlog(list[i]);
+    }
+  });
+  socket.on('chat.add', function(data) {
+    addlog(data);
+  });
+  function send() {
+    socket.emit('chat.add', {
+      name:$('#name').val(),
+      message:$('#message').val()
+    });
+    return false;
+  }
+h1 Socket.IO Demo
+div
+  h2 Send message
+  form(onsubmit='return send()')
+    span Name:
+    input#name(type='text',name='name')
+    span Message:
+    input#message(type='text',name='message')
+    input(type='submit',value='Send')
+div
+  h3 Log
+  ul#log

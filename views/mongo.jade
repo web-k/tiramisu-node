@@ -1,0 +1,9 @@
+h1 MongoDB Example
+h2 Add new data
+form(action='/mongo',method='post')
+  input(type='text',name='name')
+  input(type='submit',value='add')
+h2 List
+ul
+  each item in list
+    li=item.name
