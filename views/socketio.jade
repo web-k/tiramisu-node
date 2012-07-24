@@ -18,7 +18,7 @@ script(type='text/javascript')
       hour + ':' + minute + ' (' + data.name + ') ' + data.message
     ));
   }
-  var socket = io.connect('http://192.168.12.141:3000/chat');
+  var socket = io.connect('/chat');
   socket.on('chat.list', function(list) {
     for (var i = 0; i < list.lenght; i++) {
       addlog(list[i]);
